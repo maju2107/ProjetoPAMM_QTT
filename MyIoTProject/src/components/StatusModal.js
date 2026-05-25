@@ -26,51 +26,52 @@ const StatusModal = ({visible, onRetry, onLater}) => {
 };
 
 const styles = StyleSheet.create({
-modalContainer: { 
-    flex: 1, 
-    backgroundColor:'rgba(0,0,0,0.85)',
-    justifyContent: 'center',
-    alignItems: 'center'
-},
 
-modalContent: {
-    backgroundColor: '#222',
-    padding: 30,
-    borderRadius: 20,
-    width: '85%',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#333'
-},
+    modalContainer: { 
+        flex: 1, 
+        backgroundColor:'rgba(0,0,0,0.85)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 
-modalText: {
-    color: '#FFF',
-    marginBottom: 25,
-    textAlign: 'center',
-    fontSize: 16
-},
+    modalContent: {
+        backgroundColor: '#222',
+        padding: 30,
+        borderRadius: 20,
+        width: '85%',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#333',
+    },
 
-btnRetry: {
-    backgroundColor: '#27AE60',
-    padding: 15,
-    borderRadius: 12,
-    width: '100%',
-    marginBottom: 12
-},
+    modalText: {
+        color: '#FFF',
+        marginBottom: 25,
+        textAlign: 'center',
+        fontSize: 16,
+    },
 
-btnLater: {
-    backgroundColor: '#444',
-    padding: 15,
-    borderRadius: 12,
-    width: '100%'
-},
+    btnRetry: {
+        backgroundColor: '#27AE60',
+        padding: 15,
+        borderRadius: 12,
+        width: '100%',
+        marginBottom: 12,
+    },
 
-btnText: {
-    color: '#FFF',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16
-}
+    btnLater: {
+        backgroundColor: '#444',
+        padding: 15,
+        borderRadius: 12,
+        width: '100%',
+    },
+
+    btnText: {
+        color: '#FFF',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 16,
+    }
 
 });
 

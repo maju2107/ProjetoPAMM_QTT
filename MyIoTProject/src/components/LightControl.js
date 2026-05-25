@@ -4,7 +4,7 @@ import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 
 export default function LightControl({ isLightON, onToggle}) {
     return (
-        <View style={StyleSheet.card}>
+        <View style={styles.card}>
             <TouchableOpacity onPress={onToggle}>
                 <Icon
                  name={isLightON ? 'lightbulb-on' : 'lightbulb-outline'}
@@ -15,9 +15,10 @@ export default function LightControl({ isLightON, onToggle}) {
             <Text style={styles.label}> {isLightON ? 'Luz Ligada' : 'Luz Desligada'} </Text>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
+
     card: {
     backgroundColor: '#1E1E1E',
     padding: 30,
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginBottom: 20,
-},
+    },
 
     label: {
         color: '#AAA',
