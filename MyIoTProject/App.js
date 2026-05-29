@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import { env }from 'expo-env';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+
 import MQTTService from './src/services/mqttService.js';
 import StatusModal from './src/components/StatusModal.js';
 import LightControl from './src/components/LightControl.js';
@@ -10,74 +10,107 @@ const mqtt = new MQTTService();
 
 export default function App() {
 
-const [isConnected, setIsConnected] = useState(false);
-const [showError, setShowError] = useState(false);
-const [isLightON, setIsLightON] = useState(false);
-const [temp, setTemp] = useState(0);
-const [hum, setHum] = useState(0);
+  const [isConnected, setIsConnected] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [isLightON, setIsLightON] = useState(false);
+  const [temp, setTemp] = useState(0);
+  const [hum, setHum] = useState(0);
 
-const mqttConfig = {
-  host: env.MQTT_HOST,
-  port: parseInt(env.MQTT_PORT),
-  path: env.MQTT_PATH,
-  user: env.MQTT_USER,
-  pass: env.MQTT_PASS,
-  clientId: 'RN_App_' + Math.random(),
-};
+  const mqttConfig = {
+    host: process.env.EXPO_PUBLIC_MQTT_HOST,
+    port: parseInt(process.env.EXPO_PUBLIC_MQTT_PORT),
+    path: process.env.EXPO_PUBLIC_MQTT_PATH,
+    user: process.env.EXPO_PUBLIC_MQTT_USER,
+    pass: process.env.EXPO_PUBLIC_MQTT_PASS,
+    clientId: 'RN_App_' + Math.random(),
+  };
 
-useEffect(() => {
-  startConnection();
-}, []);
+  
+  console.log(process.env.EXPO_PUBLIC_MQTT_HOST);
+  console.log(process.env.EXPO_PUBLIC_MQTT_PORT);
+  console.log(process.env.EXPO_PUBLIC_MQTT_PATH);
+  console.log(process.env.EXPO_PUBLIC_MQTT_USER);
 
 
-const startConnection = () => {
-  setShowError(false);
 
-  mqtt.connect(
-    mqttConfig,
-    (topic, message) => {
-      if (topic === 'casa/temp') setTemp(parseFloat(message));
-      if (topic === 'casa/umid') setHum(parseFloat(message));
-      if (topic === 'casa/luz') setIsLightON(parseFloat(message === "1"));
-    },
+  useEffect(() => {
+    startConnection();
+  }, []);
 
-    () => {
-      setIsConnected(true);
-      mqtt.subscribe('casa/temp');
-      mqtt.subscribe('casa/umid');
-      mqtt.subscribe('casa/luz');
-    },
+  const startConnection = () => {
 
-    (err) => {
-      setIsConnected(false);
-      setShowError(true);
-    },
+    setShowError(false);
 
-  );
-};
+    mqtt.connect(
+
+      mqttConfig,
+
+      (topic, message) => {
+
+        if (topic === 'casa/temp')
+          setTemp(parseFloat(message));
+
+        if (topic === 'casa/umid')
+          setHum(parseFloat(message));
+
+        if (topic === 'casa/luz')
+          setIsLightON(message === "1");
+      },
+
+      () => {
+
+        setIsConnected(true);
+
+        mqtt.subscribe('casa/temp');
+        mqtt.subscribe('casa/umid');
+        mqtt.subscribe('casa/luz');
+      },
+
+      (err) => {
+
+        console.log(err);
+
+        setIsConnected(false);
+        setShowError(true);
+      },
+    );
+  };
 
   const toggleLight = () => {
+
     const newState = isLightON ? "0" : "1";
+
     mqtt.publish('casa/luz', newState);
   };
 
   return (
+
     <View style={styles.container}>
-      <Text style={styles.header}>Smart Home IoT</Text>
 
-      <LightControl isLightON={isLightON} onToggle={toggleLight}/>
+      <Text style={styles.header}>
+        Smart Home IoT
+      </Text>
 
-      <Gauges temp={temp} hum={hum}/>
+      <LightControl
+        isLightON={isLightON}
+        onToggle={toggleLight}
+      />
+
+      <Gauges
+        temp={temp}
+        hum={hum}
+      />
 
       <StatusModal
         visible={showError}
         onRetry={startConnection}
         onLater={() => setShowError(false)}
       />
+
     </View>
+
   );
 }
-
 
 const styles = StyleSheet.create({
 
@@ -95,5 +128,5 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 20,
   },
-  
+
 });
